@@ -249,18 +249,18 @@
 (function(){
   var questions = [
     { id:'company',           label:"A household object" },
-    { id:'phase',             label:"A phase you went through in middle school" },
+    { id:'fruit',             label:"A fruit" },
+    { id:'officeSupplies',    label:"Office supplies, plural" },
+    { id:'agency',            label:"A government agency" },
     { id:'procedure',         label:"A medical procedure" },
     { id:'animal',            label:"A type of animal" },
-    { id:'tla',               label:"A texting abbreviation" },
-    { id:'adverb',            label:"An adverb" },
     { id:'chore',             label:"A chore you hate" },
     { id:'exName',            label:"An ex's first name" },
     { id:'kidsMenuItems',     label:"Things on a kids' menu" },
     { id:'landmark',          label:"A famous landmark" },
     { id:'verbIng1',          label:"A verb ending in -ing" },
     { id:'fridgeThing',       label:"Something in your fridge" },
-    { id:'familyMember',      label:"A family member" },
+    { id:'holidayTradition',  label:"A holiday tradition" },
     { id:'leisureActivity',   label:"A leisure activity" },
     { id:'professionsPlural', label:"A profession, plural" }
   ];
@@ -368,32 +368,63 @@
     return out;
   }
 
+  // "banana" -> "bananas", "cherry" -> "cherries", "peach" -> "peaches".
+  // Only the last word changes ("dragon fruit" -> "dragon fruits"), and
+  // answers that already look plural ("grapes") are left alone.
+  function pluralize(phrase){
+    var m = phrase.trim().match(/^(.*?)([A-Za-z]+)([^A-Za-z]*)$/);
+    if (!m) return phrase;
+    var w = m[2], lower = w.toLowerCase(), plural;
+    if (/(ss|x|z|ch|sh)$/.test(lower)) plural = w + 'es';
+    else if (/(s|ies)$/.test(lower)) plural = w;
+    else if (/[^aeiou]y$/.test(lower)) plural = w.slice(0, -1) + 'ies';
+    else if (/^(tomato|potato|mango)$/.test(lower)) plural = w + 'es';
+    else plural = w + 's';
+    if (w === w.toUpperCase() && w.length > 1) plural = plural.toUpperCase();
+    return m[1] + plural + m[3];
+  }
+
+  // "Internal Revenue Service" -> "IRS"; a short single word like "fbi" is
+  // treated as an acronym already and just uppercased.
+  function abbreviate(name){
+    var words = name.trim().split(/[^A-Za-z]+/).filter(Boolean);
+    if (!words.length) return 'XYZ';
+    if (words.length === 1 && words[0].length <= 5) return words[0].toUpperCase();
+    var minor = /^(of|the|and|for|on|in|to|a|an|&)$/i;
+    var initials = words.filter(function(w){ return !minor.test(w); })
+      .map(function(w){ return w.charAt(0); }).join('');
+    if (words.length === 1) initials = words[0].slice(0, 3);
+    return initials.toUpperCase();
+  }
+
   function showResult(){
     var a = answers;
     var letters = (a.company || '').toLowerCase().replace(/[^a-z]/g,'');
     var company = letters.length ? startupify(letters) : 'yourthing';
-    var tla = (a.tla && a.tla.length) ? a.tla.toUpperCase() : 'XYZ';
+    var agency = (a.agency && a.agency.length) ? a.agency : 'agency';
+    var abbrev = (a.agency && a.agency.length) ? abbreviate(a.agency) : 'XYZ';
 
     var companyTag = '<span class="fill">' + esc(company) + '.ai</span>';
-    var tlaTag = '<span class="fill">' + esc(tla) + '</span>';
+    var abbrevTag = '<span class="fill">' + esc(abbrev) + '</span>';
 
     var html =
-      companyTag + '\n\n' +
-      companyTag + ' is the ' + fill(a.phase,'phase') + ' suite that empowers your digital ' +
-      fill(a.procedure,'procedure') + ' workflow. We use our agentic ' + fill(a.animal,'animal') +
-      ' harness to maximize your ' + fill(a.tla,'abbreviation') + ' so you can become more ' +
-      fill(a.adverb,'adverb') + ' strategic.\n\n' +
+      'What if ' + fill(a.fruit && pluralize(a.fruit),'fruit') + ' were ' +
+      fill(a.officeSupplies,'office supplies') + '?\n\n' +
 
-      companyTag + ' automates your ' + fill(a.chore,'chore') + ' with an all-in-one ' +
-      fill(a.exName,'name') + ' platform that delivers the infrastructure, tooling, and guardrails for your ' +
-      tlaTag + ' team to bring the most performant ' + fill(a.kidsMenuItems,'items') + ' to market.\n\n' +
+      companyTag + ' is the ' + fill(agency,'agency') + ' suite that empowers your digital ' +
+      fill(a.procedure,'procedure') + ' workflow. We use our agentic ' + fill(a.animal,'animal') +
+      ' harness to optimize your ' + fill(a.chore,'chore') + '.\n\n' +
+
+      'Our proprietary ' + fill(a.exName,'name') +
+      ' platform delivers the infrastructure, tooling, and guardrails for your ' +
+      abbrevTag + ' team to bring the most performant ' + fill(a.kidsMenuItems,'items') + ' to market.\n\n' +
 
       'Our bleeding-edge frontier research lab brings you the building blocks to disrupt the ' +
       fill(a.landmark,'landmark') + ' ' + fill(a.verbIng1,'-ing') +
       ' space without leaving the comfort of your couch.\n\n' +
 
-      "It's the AI-native " + tlaTag + ' that automates ' + fill(a.fridgeThing,'food') + ', ' +
-      fill(a.familyMember,'family member') + ', and ' +
+      "It's the AI-native " + fill(agency,'agency') + ' that automates ' + fill(a.fridgeThing,'food') + ', ' +
+      fill(a.holidayTradition,'holiday tradition') + ', and ' +
       fill(a.leisureActivity,'hobby') + '.\n\n' +
 
       'Now hiring ' + fill(a.professionsPlural,'people') + '. (Humans need not apply.)';
