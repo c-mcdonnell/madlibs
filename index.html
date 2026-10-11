@@ -210,7 +210,7 @@
     </div>
     <p class="intro-copy">
       You're about to launch an AI platform with <strong>zero funding diligence</strong> and
-      <strong>maximum jargon</strong>. Answer 20 quick prompts — don't overthink it, weird is better —
+      <strong>maximum jargon</strong>. Answer 16 quick prompts — don't overthink it, weird is better —
       and we'll turn them into your very own San Francisco billboard ad.
     </p>
     <div class="spacer"></div>
@@ -220,7 +220,7 @@
   <!-- QUESTION SCREEN -->
   <div id="screen-question" class="screen hidden">
     <div class="progress-row">
-      <span id="progress-text">Prompt 1 / 20</span>
+      <span id="progress-text">Prompt 1 / 16</span>
       <span id="progress-pct">5%</span>
     </div>
     <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
@@ -254,13 +254,9 @@
     { id:'animal',            label:"A type of animal" },
     { id:'tla',               label:"Any three letters" },
     { id:'adverb',            label:"An adverb" },
-    { id:'junkDrawer',        label:"Things in your junk drawer" },
-    { id:'badDateSpot',       label:"A place you'd never take a first date" },
-    { id:'dailyThing',        label:"Something you do during the day" },
     { id:'chore',             label:"A chore you hate" },
-    { id:'exName',            label:"Your ex's name" },
-    { id:'kidsMenuItems',     label:"Items on a kids' menu, plural" },
-    { id:'number',            label:"A number" },
+    { id:'exName',            label:"An ex's first name" },
+    { id:'kidsMenuItems',     label:"Things on a kids' menu" },
     { id:'natureAspect',      label:"An aspect of nature" },
     { id:'verbIng1',          label:"A verb ending in -ing" },
     { id:'fridgeThing',       label:"Something in your fridge" },
@@ -389,17 +385,11 @@
       ' harness to maximize your ' + fill(a.tla,'letters') + ' so you can become more ' +
       fill(a.adverb,'adverb') + ' strategic.\n\n' +
 
-      'Our platform is the AI solution for building modern ' + fill(a.junkDrawer,'things') +
-      ' and deploying them at' + fill(a.badDateSpot,'somewhere') +
-      '. Move beyond legacy automation and supercharge your ' + fill(a.dailyThing,'routine') +
-      ' — zero behavior change.\n\n' +
-
       companyTag + ' automates your ' + fill(a.chore,'chore') + ' with an all-in-one ' +
       fill(a.exName,'name') + ' platform that delivers the infrastructure, tooling, and guardrails for your ' +
-      tlaTag + ' team to bring the most performant ' + fill(a.kidsMenuItems,'items') + ' to market.\n\n' +
+      tlaTag + ' team to bring the most performant ' + fill(a.kidsMenuItems,'items') + ' to market. Zero behavior change.\n\n' +
 
-      'Our bleeding-edge frontier research lab, backed by a monthly burn rate of $' +
-      fill(a.number,'0') + ' million, brings you the building blocks to disrupt the ' +
+      'Our bleeding-edge frontier research lab brings you the building blocks to disrupt the ' +
       fill(a.natureAspect,'nature') + ' ' + fill(a.verbIng1,'-ing') +
       ' space without leaving the comfort of your couch.\n\n' +
 
