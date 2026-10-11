@@ -226,7 +226,7 @@
     <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
 
     <div class="prompt-label">Give us...</div>
-    <div class="prompt-text" id="prompt-text">A household object, misspelled</div>
+    <div class="prompt-text" id="prompt-text">A household object</div>
 
     <input type="text" class="answer-input" id="answer-input" placeholder="Type your answer" autocomplete="off" autocapitalize="off" spellcheck="false">
 
@@ -248,7 +248,7 @@
 <script>
 (function(){
   var questions = [
-    { id:'company',           label:"A household object, misspelled" },
+    { id:'company',           label:"A household object" },
     { id:'danceStyle',        label:"A dance style" },
     { id:'noun1',             label:"A noun" },
     { id:'animal',            label:"A type of animal" },
@@ -346,9 +346,37 @@
     return '<span class="fill">' + esc(v) + '</span>';
   }
 
+  // Startup-style misspelling: drop or swap a couple of letters but keep it
+  // pronounceable, e.g. toaster -> tostrr, phone -> fon, clock -> klok.
+  function startupify(word){
+    var rules = [
+      [/er$/, 'r'],
+      [/oa/, 'o'],
+      [/ea/, 'e'],
+      [/ph/, 'f'],
+      [/ck/, 'k'],
+      [/([^aeiou])i([^aeiou])/, '$1y$2'],
+      [/([^aeiou])e$/, '$1'],
+      [/([^aeiou])le$/, '$1l'],
+      [/^c([aoulr])/, 'k$1']
+    ];
+    var out = word, changes = 0;
+    for (var i = 0; i < rules.length && changes < 2; i++){
+      var next = out.replace(rules[i][0], rules[i][1]);
+      if (next !== out && next.length >= 3){ out = next; changes++; }
+    }
+    if (/[^aeiou]r$/.test(out)) out += 'r';
+    else if (changes === 0){
+      if (/[aeiou]$/.test(out)) out += 'h';
+      else out += out.charAt(out.length - 1);
+    }
+    return out;
+  }
+
   function showResult(){
     var a = answers;
-    var company = (a.company && a.company.length) ? a.company.toLowerCase().replace(/\s+/g,'') : 'yourthing';
+    var letters = (a.company || '').toLowerCase().replace(/[^a-z]/g,'');
+    var company = letters.length ? startupify(letters) : 'yourthing';
     var tla = (a.tla && a.tla.length) ? a.tla.toUpperCase() : 'XYZ';
 
     var companyTag = '<span class="fill">' + esc(company) + '.ai</span>';
