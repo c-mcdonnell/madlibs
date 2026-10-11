@@ -257,11 +257,11 @@
     { id:'chore',             label:"A chore you hate" },
     { id:'exName',            label:"An ex's first name" },
     { id:'kidsMenuItems',     label:"Things on a kids' menu" },
-    { id:'landmark',          label:"A famous landmark" },
+    { id:'fieldTrip',         label:"Somewhere you'd go on a field trip" },
     { id:'verbIng1',          label:"A verb ending in -ing" },
     { id:'fridgeThing',       label:"Something in your fridge" },
     { id:'holidayTradition',  label:"A holiday tradition" },
-    { id:'leisureActivity',   label:"A leisure activity" },
+    { id:'secondDate',        label:"Something you'd do on a second date" },
     { id:'professionsPlural', label:"A profession, plural" }
   ];
 
@@ -397,6 +397,34 @@
     return initials.toUpperCase();
   }
 
+  // Turns a verb phrase into an -ing phrase so it reads as a thing being
+  // automated: "see a movie" -> "seeing a movie". Noun phrases like
+  // "mini golf" don't start with a known verb and are left alone.
+  var DATE_VERBS = ('go get grab see watch eat drink have make cook bake take try play do ' +
+    'walk hike run jog swim bike ride dance sing read shop visit meet hang sit chat talk ' +
+    'kiss hug cuddle bowl skate ski surf climb paint draw sail fish camp stroll explore ' +
+    'tour taste share order build fly drive travel listen attend binge rent book bring ' +
+    'catch hit throw stay picnic plan learn study write knit garden volunteer split ' +
+    'buy feed pet').split(' ');
+
+  function toIng(verb){
+    var v = verb.toLowerCase();
+    if (v === 'picnic') return 'picnicking';
+    if (/ie$/.test(v)) return v.slice(0, -2) + 'ying';
+    if (/[^aeiou]e$/.test(v) || /[^aeo]ue$/.test(v)) return v.slice(0, -1) + 'ing';
+    if (/^[^aeiou]*[aeiou][^aeiouwxy]$/.test(v)) return v + v.charAt(v.length - 1) + 'ing';
+    return v + 'ing';
+  }
+
+  function gerundify(phrase){
+    var p = phrase.trim().replace(/^to\s+/i, '');
+    var m = p.match(/^([A-Za-z]+)(.*)$/);
+    if (!m) return p;
+    var first = m[1].toLowerCase();
+    if (/ing$/.test(first) || (first !== 'go' && /^\s+[A-Za-z]+ing\b/.test(m[2])) || DATE_VERBS.indexOf(first) === -1) return p;
+    return toIng(first) + m[2];
+  }
+
   function showResult(){
     var a = answers;
     var letters = (a.company || '').toLowerCase().replace(/[^a-z]/g,'');
@@ -420,12 +448,12 @@
       abbrevTag + ' team to bring the most performant ' + fill(a.kidsMenuItems,'items') + ' to market.\n\n' +
 
       'Our bleeding-edge frontier research lab brings you the building blocks to disrupt the ' +
-      fill(a.landmark,'landmark') + ' ' + fill(a.verbIng1,'-ing') +
+      fill(a.fieldTrip,'field trip spot') + ' ' + fill(a.verbIng1,'-ing') +
       ' space without leaving the comfort of your couch.\n\n' +
 
       "It's the AI-native " + fill(agency,'agency') + ' that automates ' + fill(a.fridgeThing,'food') + ', ' +
       fill(a.holidayTradition,'holiday tradition') + ', and ' +
-      fill(a.leisureActivity,'hobby') + '.\n\n' +
+      fill(a.secondDate && gerundify(a.secondDate),'second date') + '.\n\n' +
 
       'Now hiring ' + fill(a.professionsPlural,'people') + '. (Humans need not apply.)';
 
