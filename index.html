@@ -210,7 +210,7 @@
     </div>
     <p class="intro-copy">
       You're about to launch an AI platform with <strong>zero funding diligence</strong> and
-      <strong>maximum jargon</strong>. Answer 16 quick prompts — don't overthink it, weird is better —
+      <strong>maximum jargon</strong>. Answer 15 quick prompts — don't overthink it, weird is better —
       and we'll turn them into your very own San Francisco billboard ad.
     </p>
     <div class="spacer"></div>
@@ -220,7 +220,7 @@
   <!-- QUESTION SCREEN -->
   <div id="screen-question" class="screen hidden">
     <div class="progress-row">
-      <span id="progress-text">Prompt 1 / 16</span>
+      <span id="progress-text">Prompt 1 / 15</span>
       <span id="progress-pct">5%</span>
     </div>
     <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
@@ -249,19 +249,18 @@
 (function(){
   var questions = [
     { id:'company',           label:"A household object" },
-    { id:'danceStyle',        label:"A dance style" },
-    { id:'noun1',             label:"A noun" },
+    { id:'phase',             label:"A phase you went through in middle school" },
+    { id:'procedure',         label:"A medical procedure" },
     { id:'animal',            label:"A type of animal" },
-    { id:'tla',               label:"Any three letters" },
+    { id:'tla',               label:"A texting abbreviation" },
     { id:'adverb',            label:"An adverb" },
     { id:'chore',             label:"A chore you hate" },
     { id:'exName',            label:"An ex's first name" },
     { id:'kidsMenuItems',     label:"Things on a kids' menu" },
-    { id:'natureAspect',      label:"An aspect of nature" },
+    { id:'landmark',          label:"A famous landmark" },
     { id:'verbIng1',          label:"A verb ending in -ing" },
     { id:'fridgeThing',       label:"Something in your fridge" },
-    { id:'verbIng2',          label:"A verb ending in -ing" },
-    { id:'bodyPart',          label:"A body part" },
+    { id:'familyMember',      label:"A family member" },
     { id:'leisureActivity',   label:"A leisure activity" },
     { id:'professionsPlural', label:"A profession, plural" }
   ];
@@ -380,21 +379,21 @@
 
     var html =
       companyTag + '\n\n' +
-      companyTag + ' is the ' + fill(a.danceStyle,'dance style') + ' suite that empowers your digital ' +
-      fill(a.noun1,'noun') + ' workflow. We use our agentic ' + fill(a.animal,'animal') +
-      ' harness to maximize your ' + fill(a.tla,'letters') + ' so you can become more ' +
+      companyTag + ' is the ' + fill(a.phase,'phase') + ' suite that empowers your digital ' +
+      fill(a.procedure,'procedure') + ' workflow. We use our agentic ' + fill(a.animal,'animal') +
+      ' harness to maximize your ' + fill(a.tla,'abbreviation') + ' so you can become more ' +
       fill(a.adverb,'adverb') + ' strategic.\n\n' +
 
       companyTag + ' automates your ' + fill(a.chore,'chore') + ' with an all-in-one ' +
       fill(a.exName,'name') + ' platform that delivers the infrastructure, tooling, and guardrails for your ' +
-      tlaTag + ' team to bring the most performant ' + fill(a.kidsMenuItems,'items') + ' to market. Zero behavior change.\n\n' +
+      tlaTag + ' team to bring the most performant ' + fill(a.kidsMenuItems,'items') + ' to market.\n\n' +
 
       'Our bleeding-edge frontier research lab brings you the building blocks to disrupt the ' +
-      fill(a.natureAspect,'nature') + ' ' + fill(a.verbIng1,'-ing') +
+      fill(a.landmark,'landmark') + ' ' + fill(a.verbIng1,'-ing') +
       ' space without leaving the comfort of your couch.\n\n' +
 
       "It's the AI-native " + tlaTag + ' that automates ' + fill(a.fridgeThing,'food') + ', ' +
-      fill(a.verbIng2,'-ing') + ' ' + fill(a.bodyPart,'body part') + ', and ' +
+      fill(a.familyMember,'family member') + ', and ' +
       fill(a.leisureActivity,'hobby') + '.\n\n' +
 
       'Now hiring ' + fill(a.professionsPlural,'people') + '. (Humans need not apply.)';
